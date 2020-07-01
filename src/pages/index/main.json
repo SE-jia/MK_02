@@ -1,0 +1,13 @@
+{
+    "usingComponents": {
+        "van-button": "/miniprogram_npm/vant-weapp/dist/button/index",
+        "van-transition": "/miniprogram_npm/vant-weapp/dist/transition/index",
+        "van-field": "/miniprogram_npm/vant-weapp/dist/field/index",
+        "van-search": "/miniprogram_npm/vant-weapp/dist/search/index",
+        "van-skeleton": "/miniprogram_npm/vant-weapp/dist/skeleton/index",
+        "van-cell": "/miniprogram_npm/vant-weapp/dist/cell/index",
+        "van-cell-group": "/miniprogram_npm/vant-weapp/dist/cell-group/index",
+        "van-tab": "/miniprogram_npm/vant-weapp/dist/tab/index",
+        "van-tabs": "/miniprogram_npm/vant-weapp/dist/tabs/index"
+    }
+}

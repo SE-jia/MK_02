@@ -1,12 +1,6 @@
-import Vue from 'vue'
-import App from './index'
+import Vue from "vue";
+import Index from "./index.vue";
 
-// add this to handle exception
-Vue.config.errorHandler = function (err) {
-  if (console && console.error) {
-    console.error(err)
-  }
-}
+const index = new Vue(Index);
 
-const app = new Vue(App)
-app.$mount()
+index.$mount();

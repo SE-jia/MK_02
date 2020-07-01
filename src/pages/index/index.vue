@@ -1,126 +1,94 @@
 <template>
-  <div @click="clickHandle">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
-    </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
+  <div class="headportrait">
+    <img class="index_img" :src="getUserlist.avatarUrl" alt />
+    <div class="Study">
+      <!-- <p @tap="toDetail">进入新大陆</p> -->
+      <p class="userName">{{ getUserlist.nickName }}</p>
+      <!-- getuserinfo响应数据保存，open-type启动获取权限 -->
+      <van-button
+        v-if="isShow"
+        plain
+        round
+        color="#333333"
+        icon="manager"
+        open-type="getUserInfo"
+        @getuserinfo="getUserInfo"
+      >点击获取账号信息</van-button>
+      <van-button
+        v-else
+        plain
+        round
+        color="#333333"
+        open-type="getUserInfo"
+        @getuserinfo="getUserInfo"
+        @tap="toDetail"
+      >进入新大陆</van-button>
     </div>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
-
 export default {
-  data () {
+  data() {
     return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
-      }
-    }
+      // 用户信息保存
+      getUserlist: {},
+      isShow: true
+    };
   },
-
-  components: {
-    card
-  },
-
+  // 这个生命周期最好，适合获取微信API登陆
+  beforeMount() {},
+  mounted() {},
+  // 这里主要是用于vue加载
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
+    getUserInfo() {
+      // 定义this
+      let that = this;
+      wx.getUserInfo({
+        success: function(res) {
+          // 获取数据 （在微信小程序里面不可以直接获取用户信息，需要请求对方同意才可以）
+          that.getUserlist = res.userInfo;
+          that.isShow = false;
+        },
+        fail: res => {
+          console.log("获取失败");
+        }
+      });
     },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
+    toDetail() {
+      wx.navigateTo({
+        // 进入页面
+        url: "/pages/list/main"
+      });
     }
-  },
-
-  created () {
-    // let app = getApp()
   }
-}
+};
 </script>
 
-<style scoped>
-.userinfo {
+<style>
+page {
+  background: #333333;
+}
+text2 {
+  text-align: center;
+  width: 80%;
+}
+.headportrait {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.index_img {
+  width: 200px;
+  height: 200px;
+  border-radius: 240rpx;
+  margin: 100rpx 0%;
 }
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
-}
-
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
+.userName {
+  text-align: center;
+  font-size: 40rpx;
+  font-weight: bold;
+  margin: 100rpx 0;
+  color: aqua;
 }
 </style>
